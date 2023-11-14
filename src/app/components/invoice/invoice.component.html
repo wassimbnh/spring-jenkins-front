@@ -1,0 +1,78 @@
+<div class="header">
+    <h2>Invoice List</h2>
+    <button (click)="showForm()" button class="btn btn-info">+</button>
+  </div>
+  
+  <form [formGroup]="invoiceForm" (ngSubmit)="onSubmitInvoice()" *ngIf="displayForm">
+    <label for="code">Amount Discount:</label>
+    <input formControlName="amountDiscount" id="amountDiscount" name="amountDiscount" required type="number" ><br><br>
+    <div *ngIf="submitted && invoiceForm.get('amountDiscount')?.hasError('required')" class="text-danger">Amount Discount is required</div>
+
+    <label for="label">Amount Invoice:</label>
+    <input formControlName="amountInvoice" id="amountInvoice" name="amountInvoice" required type="number"><br><br>
+    <div *ngIf="submitted && invoiceForm.get('amountInvoice')?.hasError('required')" class="text-danger"> Amount Invoice is required</div>
+    
+    <label for="label">Date Creation Invoice:</label>
+    <input formControlName="dateCreationInvoice" id="dateCreationInvoice" name="dateCreationInvoice" required type="date"><br><br>
+    <div *ngIf="submitted && invoiceForm.get('dateCreationInvoice')?.hasError('required')" class="text-danger"> Date Creation Invoice is required</div>
+
+    <label for="label">Date Last ModificationInvoice:</label>
+    <input formControlName="dateLastModificationInvoice" id="dateLastModificationInvoice" name="dateLastModificationInvoice" required type="date"><br><br>
+    <div *ngIf="submitted && invoiceForm.get('dateLastModificationInvoice')?.hasError('required')" class="text-danger"> Date Modification Invoice is required</div>
+
+    <div *ngIf="!isUpdate">
+    <label for="label">Supplier:</label>
+    <label for="label">Supplier:</label>
+    <select formControlName="supplier" id="supplier" name="supplier" required>
+      <option *ngFor="let supp of suppliers" [ngValue]="supp">{{ supp.code }}</option>
+      </select>
+    <div *ngIf="submitted && invoiceForm.get('supplier')?.hasError('required')" class="text-danger">Supplier is required</div>
+  </div>
+
+
+    <label for="label">Archived:</label>
+    <select formControlName="archived" id="archived" name="archived" required>
+    <option value="true">Yes</option>
+    <option value="false">No</option>
+    </select>
+    <div *ngIf="submitted && invoiceForm.get('archived')?.hasError('required')" class="text-danger"> Date Creation Invoice is required</div>
+
+    <button button class="btn btn-info" type="submit" value="Submit" *ngIf="isDetails">{{isUpdate? 'Update':'Submit'}}</button>
+    <button (click)="hideForm()" button class="btn btn-danger">Cancel</button>
+    <br><br>
+  </form>
+
+
+  <div class="row">
+    <div class="card" class="text-center">
+      <table class="table">
+        <thead style="background-color: rgb(192, 183, 183);">
+        <th>Amount Discount</th>
+        <th>Amount Invoice</th>
+        <th>Date Creation</th>
+        <th>Date Last Modification</th>
+        <th>Archived</th>
+        <th>Associated Supplier</th>
+        <th>Actions</th>
+        </thead>
+        <tbody>
+        <!-- Add your table rows here -->
+        <tr *ngFor="let item of invoices">
+          <td>{{ item.amountDiscount }}</td>
+          <td>{{ item.amountInvoice }}</td>
+          <td>{{ item.dateCreationInvoice }}</td>
+          <td>{{ item.dateLastModificationInvoice }}</td>
+          <td>{{ item.archived }}</td>
+          <td>{{ item.supplier.code}}</td>
+          <td>
+            <button class="btn btn-info" (click)="onUpdateInvoiceShow(item)">Update</button>
+            <button class="btn btn-danger" (click)="onDeleteInvoice(item.idInvoice)">Delete</button>
+            <button class="btn btn-success" (click)="onDetailInvoice(item.idInvoice)">Details</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
